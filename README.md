@@ -1,4 +1,4 @@
-### Introduction
+## Introduction
 _Salmonella enterica_ is a major foodborne pathogen responsible for millions of infections worldwide and poses a significant public health threat due to its genetic diversity, host adaptability, and ability to acquire antimicrobial resistance (1,2). Whole genome sequencing is therefore routinely used to track outbreaks, characterize virulence and resistance determinants, and distinguish closely related strains (1,3). Because _S. enterica_ has a relatively small genome, is well studied, and has many high-quality reference genomes available, it also serves as a useful model for evaluating genome assembly and comparison approaches. 
 
 Modern sequencing technologies fragment DNA and sequence these fragments to produce short or long reads (4). These reads often contain sequencing errors whose frequency and nature vary depending on the platform used. Short-read technologies such as Illumina produce highly accurate reads but struggle to resolve repetitive regions, whereas long-read platforms, including Oxford Nanopore Technologies (ONT) and PacBio, generate much longer reads that can span repeats but historically have higher per-base error rates (5,6). 
@@ -21,12 +21,12 @@ Assembly-based comparisons align the assembled genome to a reference genome and 
 
 Overall, the goal of this project is to assemble a high-quality consensus genome of Salmonella enterica using ONT R10 sequencing data, followed by comparison to a publicly available reference genome. Key challenges include managing residual sequencing errors inherent to long-read data, achieving complete genome circularization, and ensuring accurate variant calling when comparing the assembled genome to a reference. The choice of assembler, polishing strategy, and alignment parameters can strongly influence assembly quality and downstream variant detection, highlighting the importance of method selection. 
 
-### Methods
-# Sequencing data acquisition and filtering
+## Methods
+#### Sequencing data acquisition and filtering
 Raw Oxford Nanopore R10 sequencing reads for _Salmonella enterica_ will be used as input in FASTQ format. Reads will be filtered for quality and length using SeqKit v2.12.0 (19) with  a minimum read length (`--min-len`) of 1kb and a minimum Phred score (`--min-qual`) of 20 to retain high-quality reads suitable for assembly. 
 
-# Genome assembly and polishing
+#### Genome assembly and polishing
 Filtered reads will be assembled using a consensus-based approach. Initial assemblies will be generated independently using Flye v2.9.6 (12), Canu v2.3 (14), and Raven v1.8.3 (13), each optimized for long-read ONT data. Flye will be run with the `--nano-hq` option for high-quality ONT reads and `--genome-size 5m` to specify the expected genome size. Canu and Raven will be run using default ONT parameters, with genome size set to 5 Mb. Assemblies will then be combined using Autocycler v0.5.2 (16). The consensus assembly will be polished using Medaka v2.2.0 with the `--bacteria` model (20). Assembly quality will be assessed using QUAST v5.3.0 comparing the polished assembly to the S. enterica reference genome (NCBI ASM694v2) (21). Metrics including number of contigs, total assembly length, N50, number of indels per 100 kb, and missing bases per 100 kb will be reported. Contig structure and circularization will be further inspected using Bandage v0.9.0 (22). 
 
-# Variant calling and visualization
+#### Variant calling and visualization
 The polished assembly in FASTA format will be aligned to the reference genome using MUMmer v4.x (23). Alignment will be performed with the `nucmer` subcommand, specifying` --maxmatch` to identify all maximal exact matches between the assembly and reference. The resulting delta file will be filtered with `delta-filter -1` to retain only one-to-one aligments. SNPs and indels will be extracted from the filtered alignment using `show-snps -Clr`, which reports variant position, reference and query bases, and contextual information. For visualization, both the polished assembly and the reference genome will be loaded into IGV v2.16.0 along with the MUMmer-generated SNP and alignment data (24). This will identify alignment quality, structural rearrangements, and base-level differences between genomes. 
