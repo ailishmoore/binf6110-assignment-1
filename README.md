@@ -1,3 +1,4 @@
+# Oxford Nanopore long read genome assembly and variant analysis of a _Salmonella enterica_ isolate 
 ## Introduction
 _Salmonella enterica_ is a major foodborne pathogen responsible for millions of infections worldwide and poses a significant public health threat due to its genetic diversity, host adaptability, and ability to acquire antimicrobial resistance (1,2). Whole genome sequencing is therefore routinely used to track outbreaks, characterize virulence and resistance determinants, and distinguish closely related strains (1,3). Because _S. enterica_ has a relatively small genome, is well studied, and has many high-quality reference genomes available, it also serves as a useful model for evaluating genome assembly and comparison approaches. 
 
@@ -30,3 +31,31 @@ Filtered reads will be assembled using a consensus-based approach. Initial assem
 
 #### Variant calling and visualization
 The polished assembly in FASTA format will be aligned to the reference genome using MUMmer v4.x (23). Alignment will be performed with the `nucmer` subcommand, specifying` --maxmatch` to identify all maximal exact matches between the assembly and reference. The resulting delta file will be filtered with `delta-filter -1` to retain only one-to-one aligments. SNPs and indels will be extracted from the filtered alignment using `show-snps -Clr`, which reports variant position, reference and query bases, and contextual information. For visualization, both the polished assembly and the reference genome will be loaded into IGV v2.16.0 along with the MUMmer-generated SNP and alignment data (24). This will identify alignment quality, structural rearrangements, and base-level differences between genomes. 
+
+## References
+1. Carroll LM, Wiedmann M, Den Bakker H, Siler J, Warchocki S, Kent D, et al. Whole-Genome Sequencing of Drug-Resistant Salmonella enterica Isolates from Dairy Cattle and Humans in New York and Washington States Reveals Source and Geographic Associations. Schaffner DW, editor. Appl Environ Microbiol. 2017 June 15;83(12):e00140-17. 
+2.	Li C, Tyson GH, Hsu CH, Harrison L, Strain E, Tran TT, et al. Long-Read Sequencing Reveals Evolution and Acquisition of Antimicrobial Resistance and Virulence Genes in Salmonella enterica. Front Microbiol. 2021 Nov 19;12:777817. 
+3.	Song S un, La TM, Kim T, Kim J, Shin E, Temuujin U, et al. Whole-genome sequencing analysis of Salmonella enterica serotype Enteritidis isolated from poultry sources in Mongolia. Front Vet Sci. 2025 May 20;12:1595674. 
+4.	Goodwin S, McPherson JD, McCombie WR. Coming of age: ten years of next-generation sequencing technologies. Nat Rev Genet. 2016 June;17(6):333–51. 
+5.	Zhang P, Jiang D, Wang Y, Yao X, Luo Y, Yang Z. Comparison of De Novo Assembly Strategies for Bacterial Genomes. IJMS. 2021 July 17;22(14):7668. 
+6.	Espinosa E, Bautista R, Larrosa R, Plata O. Advancements in long-read genome sequencing technologies and algorithms. Genomics. 2024 May;116(3):110842. 
+7.	Land M, Hauser L, Jun SR, Nookaew I, Leuze MR, Ahn TH, et al. Insights from 20 years of bacterial genome sequencing. Funct Integr Genomics. 2015 Mar;15(2):141–61. 
+8.	Wick RR, Judd LM, Holt KE. Assembling the perfect bacterial genome using Oxford Nanopore and Illumina sequencing. Ouellette F, editor. PLoS Comput Biol. 2023 Mar 2;19(3):e1010905. 
+9.	Zhao W, Zeng W, Pang B, Luo M, Peng Y, Xu J, et al. Oxford nanopore long-read sequencing enables the generation of complete bacterial and plasmid genomes without short-read sequencing. Front Microbiol. 2023 May 15;14:1179966. 
+10.	Boostrom I, Portal EAR, Spiller OB, Walsh TR, Sands K. Comparing Long-Read Assemblers to Explore the Potential of a Sustainable Low-Cost, Low-Infrastructure Approach to Sequence Antimicrobial Resistant Bacteria With Oxford Nanopore Sequencing. Front Microbiol. 2022 Mar 3;13:796465. 
+11.	Johnson J, Soehnlen M, Blankenship HM. Long read genome assemblers struggle with small plasmids. Microbial Genomics [Internet]. 2023 May 24 [cited 2026 Jan 18];9(5). Available from: https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.001024
+12.	Kolmogorov M, Yuan J, Lin Y, Pevzner PA. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol. 2019 May;37(5):540–6. 
+13.	Vaser R, Šikić M. Time- and memory-efficient genome assembly with Raven. Nat Comput Sci. 2021 May 20;1(5):332–6. 
+14.	Koren S, Walenz BP, Berlin K, Miller JR, Bergman NH, Phillippy AM. Canu: scalable and accurate long-read assembly via adaptive k -mer weighting and repeat separation. Genome Res. 2017 May;27(5):722–36. 
+15.	Wick RR, Judd LM, Cerdeira LT, Hawkey J, Méric G, Vezina B, et al. Trycycler: consensus long-read assemblies for bacterial genomes. Genome Biol. 2021 Dec;22(1):266. 
+16.	Wick RR, Howden BP, Stinear TP. Autocycler: long-read consensus assembly for bacterial genomes. Alkan C, editor. Bioinformatics. 2025 Sept 1;41(9):btaf474. 
+17.	Kaas RS, Leekitcharoenphon P, Aarestrup FM, Lund O. Solving the Problem of Comparing Whole Bacterial Genomes across Different Sequencing Platforms. Friedrich A, editor. PLoS ONE. 2014 Aug 11;9(8):e104984. 
+18.	Sauvage T, Cormier A, Delphine P. A comparison of Oxford nanopore library strategies for bacterial genomics. BMC Genomics. 2023 Oct 20;24(1):627. 
+19.	Shen W, Le S, Li Y, Hu F. SeqKit: A Cross-Platform and Ultrafast Toolkit for FASTA/Q File Manipulation. Zou Q, editor. PLoS ONE. 2016 Oct 5;11(10):e0163962. 
+20.	Medaka [Internet]. GitHub: Oxford Nanopore Technologies; Available from: https://github.com/nanoporetech/medaka
+21.	Gurevich A, Saveliev V, Vyahhi N, Tesler G. QUAST: quality assessment tool for genome assemblies. Bioinformatics. 2013 Apr 15;29(8):1072–5. 
+22.	Wick RR, Schultz MB, Zobel J, Holt KE. Bandage: interactive visualization of de novo genome assemblies. Bioinformatics. 2015 Oct 15;31(20):3350–2. 
+23.	Marçais G, Delcher AL, Phillippy AM, Coston R, Salzberg SL, Zimin A. MUMmer4: A fast and versatile genome alignment system. Darling AE, editor. PLoS Comput Biol. 2018 Jan 26;14(1):e1005944. 
+24.	Robinson JT, Thorvaldsdóttir H, Wenger AM, Zehir A, Mesirov JP. Variant Review with the Integrative Genomics Viewer. Cancer Research. 2017 Nov 1;77(21):e31–4. 
+
+
