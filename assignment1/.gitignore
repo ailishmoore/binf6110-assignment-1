@@ -1,0 +1,38 @@
+# macOS junk
+.DS_Store
+
+# Large sequencing files
+*.fastq
+*.fastq.gz
+*.fq
+*.bam
+*.sam
+*.bai
+*.fasta
+*.fa
+*.fna
+*.mmi
+*.idx
+
+# Assembly & analysis outputs
+Flye/
+flye_output/
+assemblies/
+filtered_reads/
+data/
+input/
+input 2/
+minimap2/
+igv/
+kallisto_output/
+Clair3/
+
+# Plots & temp
+*.png
+*.log
+terminal_history.txt
+
+# R / misc
+*.RData
+*.tar.gz
+
