@@ -27,10 +27,32 @@ Overall, the goal of this project is to assemble a high-quality consensus genome
 Raw Oxford Nanopore R10 sequencing reads for _Salmonella enterica_ were used as input in FASTQ format. Reads were filtered for quality and length using SeqKit v2.12.0 (19) with  a minimum read length (`--min-len`) of 1kb and a minimum Phred score (`--min-qual`) of 20 to retain high-quality reads suitable for assembly. 
 
 #### Genome assembly and polishing
-Filtered reads were assembled de novo using Flye v2.9.6 (12) optimized for long-read ONT data. Flye was run using the `--nano-hq` option for high-quality ONT reads and `--genome-size 5m` to specify the expected genome size. The resulting assembly was polished using Medaka v2.2.0 with the R10.4.1 high accuracy 400 bp bacterial `--r1041_e82_400bps_hac_v5.2.0` model (20). Assembly quality was assessed using QUAST v5.2.0 comparing the polished assembly to the S. enterica reference genome (NCBI ASM694v2) (21). Metrics including number of contigs, total assembly length, N50, number of indels per 100 kb, and missing bases per 100 kb were reported. Contig structure and circularization were further inspected using Bandage v0.9.0 (22). 
+Filtered reads were assembled de novo using Flye v2.9.6 (12) optimized for long-read ONT data. Flye was run using the `--nano-hq` option for high-quality ONT reads and `--genome-size 5m` to specify the expected genome size. The resulting assembly was polished using Medaka v2.2.0 with the R10.4.1 high accuracy 400 bp bacterial `--r1041_e82_400bps_hac_v5.2.0` model (20). Assembly quality was assessed using QUAST v5.2.0 comparing the polished assembly to the S. enterica LT2 reference genome (NCBI ASM694v2) (21). Metrics including number of contigs, total assembly length, N50, GC content (%), genome fraction (%), number of indels per 100 kb, and missing bases per 100 kb were reported. Contig structure and circularization were further inspected using Bandage v0.9.0 (22). 
 
-#### Variant calling and visualization
-The polished assembly in FASTA format was aligned to the reference genome using minimap2 v4.0.1. (?). Alignment was performed with the `nucmer` subcommand, specifying` --maxmatch` to identify all maximal exact matches between the assembly and reference. The resulting delta file will be filtered with `delta-filter -1` to retain only one-to-one aligments. SNPs and indels will be extracted from the filtered alignment using `show-snps -Clr`, which reports variant position, reference and query bases, and contextual information. For visualization, both the polished assembly and the reference genome will be loaded into IGV v2.16.0 along with the MUMmer-generated SNP and alignment data (24). This will identify alignment quality, structural rearrangements, and base-level differences between genomes. 
+#### Alignment and variant calling
+The polished assembly and raw reads were aligned to the reference genome using minimap2 v4.0.1. For assembly-to-reference alignment, minimap2 was run in 'asm5' mode, which is optimized for aligning genomes with approximately 0.1-5% sequence divergence. For read-to-reference alignment, minimap2 was run in 'map-ont' mode, which is specifically for ONT long reads. All alignments were performed using '-t 4' threads. SAM output files were converted to BAM format, sorted by genomic position, and indexed using samtools 1.23. Alignment statistics were generated using 'flagstat'. Genome coverage metrics were calculated using 'depth' for per-base coverage, and 'coverage' for per-contig coverage summaries. Variant calling was performed on the assembly-to-reference alignment using Clair3 executed via Docker. Clair3 was run in haploid precise mode with ONT-specific models to identify SNPs and indels. All contigs were included in variant calling, and phasing for FASTA output was disabled. 
+
+## Results
+#### Genome assembly and alignment
+| Metric | Filtered Assembly |
+| Number of contigs | 3 |
+| Total assembly length (bp) | 5104629 |
+| N50 (bp) | 3318771 |
+| GC content (%) | 52.19 |
+| Genome fraction (%) | 97.519 |
+| Indels/100kb | 3.6 |
+| Mismatches/100kb | 27.08 |
+Table 1. Assembly quality metrics for the filtered assembly compared to the reference genome. Reported values include contig count, total assembly length (bp), N50 (bp), GC content (%), genome fraction (%), and error rates (indels and mismatches per 100 kb) as calculated by QUAST.
+
+<img width="758" height="685" alt="bandage assembly graph" src="https://github.com/user-attachments/assets/d5f12fa1-b065-47a8-8f41-c581044f1b7c" />
+Figure 1. Bandage visualization of the polished Salmonella assembly. Nodes are labeled with contig lengths (bp) and colored according to read depth (blue is higher, green is lower).
+
+The polished assembly demonstrated high contiguity, consisting of three contigs totaling 5,104,629 bp with an N50 of 3,318,771 bp (Table 1). The assembly captured 97.5% of the reference genome and exhibited a GC content of 52.19%, consistent with the reference genome (GC content of 52.22%). Error rates were low, with 3.6 indels and 27.08 mismatches per 100 kb. Bandage visualization confirmed three distinct contigs (Figure 1), including a small circular contig (~109 kb) consistent with the plasmid and two larger chromosomal contigs (~1.67 Mb and ~3.31 Mb). The separation between the two chromosomal contigs indicates that the genome was not completely closed, although the assembly accounts for the majority of the reference sequence.
+
+#### Variant calling 
+
+## Discussion
+
 
 ## References
 1. Carroll LM, Wiedmann M, Den Bakker H, Siler J, Warchocki S, Kent D, et al. Whole-Genome Sequencing of Drug-Resistant Salmonella enterica Isolates from Dairy Cattle and Humans in New York and Washington States Reveals Source and Geographic Associations. Schaffner DW, editor. Appl Environ Microbiol. 2017 June 15;83(12):e00140-17. 
