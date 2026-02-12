@@ -35,6 +35,7 @@ The polished assembly and raw reads were aligned to the reference genome using m
 ## Results
 #### Genome assembly and alignment
 | Metric | Filtered Assembly |
+|---|---|
 | Number of contigs | 3 |
 | Total assembly length (bp) | 5104629 |
 | N50 (bp) | 3318771 |
